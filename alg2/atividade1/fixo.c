@@ -44,6 +44,9 @@ void insereRegistro(FILE *df,int *endereco, int nusp){
     fseek(df,*endereco,0); 
     fprintf(df,"%d %s %s %s %f ",novo.numUSP,novo.nome,novo.sobrenome,novo.curso,novo.nota); 
     *endereco = *endereco + sizeof(Aluno); // guarda ultimo 
+   /* fseek(df,0,SEEK_END);
+    long tam = ftell(df);
+    printf("%d fetell%ld\n",*endereco,tam); */
 } 
  
 int procuraResgistro(FILE *df, int nusp, Aluno *aux){ // procura regitro e manda ele por refeencia
