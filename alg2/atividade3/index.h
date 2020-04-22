@@ -45,7 +45,7 @@ INDEX_Secundario *CarregarIndexSec(FILE*, int* );
 
 list_index *CarregarLista(FILE*,int*);
 
-Aluno *CriarAluno();
+Aluno CriarAluno();
 
 Aluno *PesquisaPrim(FILE *,INDEX_Primario *,int ,int );
 

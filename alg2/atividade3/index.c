@@ -152,18 +152,18 @@ int addSec(INDEX_Secundario *vet,list_index *list,int tamSec, int tamList,int nu
 }
 
 
-Aluno *CriarAluno(){ // pera o resgistro do aluno
-    Aluno *novo = (Aluno*)malloc(sizeof(Aluno));
+Aluno CriarAluno(){ // pera o resgistro do aluno
+    Aluno novo;
     printf("Nome:");
-    scanf(" %[^\n]s",novo->nome);
+    scanf(" %[^\n]s",novo.nome);
     printf("Sobrenome:");
-    scanf(" %[^\n]s",novo->sobrenome);
+    scanf(" %[^\n]s",novo.sobrenome);
     printf("Curso:");
-    scanf(" %[^\n]s",novo->curso);
+    scanf(" %[^\n]s",novo.curso);
     printf("nUSP:");
-    scanf("%d",&novo->numUSP);
+    scanf("%d",&novo.numUSP);
     printf("Nota:");
-    scanf("%f",&novo->nota);
+    scanf("%f",&novo.nota);
     return novo;
 }
 
@@ -192,15 +192,16 @@ Aluno *PesquisaPrim(FILE *arq,INDEX_Primario *index,int tam,int nusp){
         int pos = index[op].RRN*sizeof(Aluno);
         rewind(arq);
         fseek(arq,pos,SEEK_SET);
-        Aluno *aux = (Aluno*)malloc(sizeof(Aluno));
-        /* fread(&aux->numUSP,sizeof(int),1,arq);
-        fread(aux->nome,sizeof(char),TAM,arq);
-        fread(aux->sobrenome,sizeof(char),TAM,arq);
-        fread(aux->curso,sizeof(char),TAM,arq);
-        fread(&aux->nota,sizeof(float),1,arq);*/
+        Aluno aux;
+        fread(&aux.numUSP,sizeof(int),1,arq);
+        fread(&aux.nome,sizeof(char),TAM,arq);
+        fread(&aux.sobrenome,sizeof(char),TAM,arq);
+        fread(&aux.curso,sizeof(char),TAM,arq);
+        fread(&aux.nota,sizeof(float),1,arq);
 
-      fread(&aux,sizeof(Aluno),1,arq);
-        return aux;
+      /*fread(&aux,sizeof(Aluno),1,arq);*/
+        Aluno *novo = &aux;
+        return novo;
     } else{
         printf("\n      Aluno nao existe\n");
     }
@@ -231,20 +232,21 @@ Aluno* addArquivo(FILE *arq,INDEX_Primario *vet,int tamPrim, int tamArq){
     // add no arquivo e no indice primario
     if(!arq) return NULL;
     if(!vet) return NULL;
-    Aluno *novo  = CriarAluno();
-    int op = BuscaBinaria_Prim(vet,0,tamPrim-1,novo->numUSP);
+    Aluno novo  = CriarAluno();
+    int op = BuscaBinaria_Prim(vet,0,tamPrim-1,novo.numUSP);
 
    if(op < 0){
         fseek(arq, 0, SEEK_END);
-        fwrite(&novo->numUSP,sizeof(int),1,arq);
+       /* fwrite(&novo->numUSP,sizeof(int),1,arq);
         fwrite(novo->nome,sizeof(char),TAM,arq);
         fwrite(novo->sobrenome,sizeof(char),TAM,arq);
         fwrite(novo->curso,sizeof(char),TAM,arq);
-        fwrite(&novo->nota,sizeof(float),1,arq);
-       /* fwrite(&novo,sizeof(Aluno),1,arq);  */
+        fwrite(&novo->nota,sizeof(float),1,arq);*/
+        fwrite(&novo,sizeof(Aluno),1,arq);  
 
-        addPrim(arq,vet,tamPrim,novo->numUSP,tamArq);
-        return novo;
+        addPrim(arq,vet,tamPrim,novo.numUSP,tamArq);
+        Aluno *aux = &novo;
+        return aux;
     } else{
         printf("\n      Aluno ja tem cadrastro\n\n");
         // caso o aluno ja tenha cadrastro
