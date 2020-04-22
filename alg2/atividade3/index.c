@@ -199,7 +199,7 @@ Aluno *PesquisaPrim(FILE *arq,INDEX_Primario *index,int tam,int nusp){
         fread(&aux.curso,sizeof(char),TAM,arq);
         fread(&aux.nota,sizeof(float),1,arq);
 
-      /*fread(&aux,sizeof(Aluno),1,arq);*/
+     /* fread(&aux,sizeof(Aluno),1,arq);*/
         Aluno *novo = &aux;
         return novo;
     } else{
@@ -237,12 +237,12 @@ Aluno* addArquivo(FILE *arq,INDEX_Primario *vet,int tamPrim, int tamArq){
 
    if(op < 0){
         fseek(arq, 0, SEEK_END);
-       /* fwrite(&novo->numUSP,sizeof(int),1,arq);
-        fwrite(novo->nome,sizeof(char),TAM,arq);
-        fwrite(novo->sobrenome,sizeof(char),TAM,arq);
-        fwrite(novo->curso,sizeof(char),TAM,arq);
-        fwrite(&novo->nota,sizeof(float),1,arq);*/
-        fwrite(&novo,sizeof(Aluno),1,arq);  
+        fwrite(&novo.numUSP,sizeof(int),1,arq);
+        fwrite(novo.nome,sizeof(char),TAM,arq);
+        fwrite(novo.sobrenome,sizeof(char),TAM,arq);
+        fwrite(novo.curso,sizeof(char),TAM,arq);
+        fwrite(&novo.nota,sizeof(float),1,arq);
+        /* fwrite(&novo,sizeof(Aluno),1,arq);  */
 
         addPrim(arq,vet,tamPrim,novo.numUSP,tamArq);
         Aluno *aux = &novo;
