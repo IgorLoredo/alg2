@@ -311,7 +311,7 @@ void imprimeAluno(Aluno*novo){
 }
 
 
-int *buscaList(list_index *vetlist,int pos, int tamResult){
+/*int *buscaList(list_index *vetlist,int pos, int tamResult){
     if(!vetlist) return NULL;
     if(pos < 0) return NULL;
     int i,j=1,flag = 1;
@@ -338,8 +338,24 @@ int *buscaList(list_index *vetlist,int pos, int tamResult){
     }
     tamResult = j;
     return vet;
-}
+} */
 
+
+int *buscaList(list_index *vet, int pos, int tamResult){
+    if(!vet) return NULL;
+
+    if(pos < 0) return NULL;
+    int i,j=1,flag = 1;
+    int *vet = (int*)malloc(sizeof(int));
+    vet[0] = vet[pos].nusp;
+
+    if( vetlist[pos].prox == -1){
+        tamResult = 1;
+        return vet; // caso s exista esse elemento de primeira
+    }
+
+    return 1;
+}
 
 int buscaSobrenome(FILE *arq,INDEX_Secundario *vetSec,list_index *list, int tamList,int tamSec, char Sobrenome[]){
     if(!arq) return 0;
@@ -347,7 +363,7 @@ int buscaSobrenome(FILE *arq,INDEX_Secundario *vetSec,list_index *list, int tamL
     int tam =0;
     int pos = Busca_Sec(vetSec,tamSec,Sobrenome);
     int *vet = buscaList(list,pos,tam);
-
+ 
     return 1;
 }
 
