@@ -187,18 +187,19 @@ Aluno *PesquisaPrim(FILE *arq,INDEX_Primario *index,int tam,int nusp){
     if(!arq) return NULL;
     if(!index) return NULL;
     int op = BuscaBinaria_Prim(index,0,tam-1,nusp);
+    printf(    "%d \n",op);
     if(op > -1){ // quando h regitros
         int pos = index[op].RRN*sizeof(Aluno);
-       rewind(arq);
+        rewind(arq);
         fseek(arq,pos,SEEK_SET);
         Aluno *aux = (Aluno*)malloc(sizeof(Aluno));
-        fread(&aux->numUSP,sizeof(int),1,arq);
+        /* fread(&aux->numUSP,sizeof(int),1,arq);
         fread(aux->nome,sizeof(char),TAM,arq);
         fread(aux->sobrenome,sizeof(char),TAM,arq);
         fread(aux->curso,sizeof(char),TAM,arq);
-        fread(&aux->nota,sizeof(float),1,arq);
+        fread(&aux->nota,sizeof(float),1,arq);*/
 
-       /*fread(&aux,sizeof(Aluno),1,arq);*/
+      fread(&aux,sizeof(Aluno),1,arq);
         return aux;
     } else{
         printf("\n      Aluno nao existe\n");

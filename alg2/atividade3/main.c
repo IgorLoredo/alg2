@@ -42,9 +42,7 @@ int main(void) {
         switch(comando){
             case 1:
             aux = addArquivo(arq,vetPri,tamPri,tamArq);
-            
                 if(aux){
-                      
                     addSec(vetSec,listVet,tamSec,tamList,aux->numUSP,aux->sobrenome);
                     tamList +=1;
                     tamSec +=1;
@@ -57,11 +55,11 @@ int main(void) {
 
             case 2:
                 printf("\nInsira o nUSP\n");
-                scanf("%d",&num);     
+                scanf("%d",&num);
                aux = PesquisaPrim(arq,vetPri,tamPri,num);
                 if (aux){
                     imprimeAluno(aux);
-                } 
+                }
                 aux = NULL;
             break;
             case 3:
