@@ -31,9 +31,6 @@ INDEX_Primario *CarregarIndexPri(FILE* arq,int *tam){
     INDEX_Primario *vet =(INDEX_Primario*)malloc(aux*sizeof(INDEX_Primario));
     fseek(arq,0,SEEK_SET);
     for (i=0; i<aux; i++){
-       /* vet[i] = (INDEX_Primario*)malloc( sizeof(INDEX_Primario));
-        fread(&vet[i]->nusp,sizeof(int),1,arq);
-        fread(&vet[i]->RRN,sizeof(int),1,arq); */
         fread(&vet[i],sizeof(INDEX_Primario),1,arq);
     }
     return vet;
@@ -48,8 +45,6 @@ INDEX_Secundario *CarregarIndexSec(FILE* arq, int *tam){
     INDEX_Secundario *novo =  (INDEX_Secundario*)malloc(aux*sizeof(INDEX_Secundario));
     fseek(arq,0,SEEK_SET);
     for (i=0; i<aux; i++){
-       /* fread(novo[i]->sobrenome,sizeof(char),TAM,arq);
-        fread(&novo[i]->pos,sizeof(int),1,arq); */
         fread(&novo[i],sizeof(INDEX_Secundario),1,arq);
     }
 
@@ -66,9 +61,10 @@ list_index *CarregarLista(FILE* arq,int *tam) {
     list_index *vet = (list_index*)malloc(aux*sizeof(list_index));
     fseek(arq,0,SEEK_SET);
     for (i=0; i<aux; i++){
-       fread(&vet[i].nusp,sizeof(int),1,arq);
-        fread(&vet[i].prox,sizeof(int),1,arq);
-        /* fread(&vet[i],sizeof(list_index),1,arq);*/
+
+        /*fread(&vet[i].nusp,sizeof(int),1,arq);
+        fread(&vet[i].prox,sizeof(int),1,arq);;*/
+         fread(&vet[i],sizeof(list_index),1,arq)
     }
     return vet;
 
@@ -143,7 +139,7 @@ int addSec(INDEX_Secundario *vet,list_index *list,int tamSec, int tamList,int nu
         list[tamList].prox = -1; // insere no final da lista invertida
         int Poslist = buscaListaPos(list,vet[indexPos].pos);
         list[Poslist].prox = tamList;
-        printf("        nsup %d   prox %d",list[Poslist].nusp,list[Poslist].prox);
+       // printf("        nsup %d   prox %d",list[Poslist].nusp,list[Poslist].prox);
     } /* */
 
     printf("\n      Aluno inserido\n");
@@ -186,21 +182,20 @@ int BuscaBinaria_Prim(INDEX_Primario *index, int a, int b, int nUSP){
 Aluno *PesquisaPrim(FILE *arq,INDEX_Primario *index,int tam,int nusp){
     if(!arq) return NULL;
     if(!index) return NULL;
-    int op = BuscaBinaria_Prim(index,0,tam-1,nusp);
-    printf(    "%d \n",op);
+    int op = BuscaBinaria_Prim(index,0,tam,nusp);
+    //printf(    "%d \n",op);
     if(op > -1){ // quando h regitros
         int pos = index[op].RRN*sizeof(Aluno);
         rewind(arq);
         fseek(arq,pos,SEEK_SET);
         Aluno aux;
-        fread(&aux.numUSP,sizeof(int),1,arq);
-        fread(&aux.nome,sizeof(char),TAM,arq);
-        fread(&aux.sobrenome,sizeof(char),TAM,arq);
-        fread(&aux.curso,sizeof(char),TAM,arq);
-        fread(&aux.nota,sizeof(float),1,arq);
-
-     /* fread(&aux,sizeof(Aluno),1,arq);*/
-        Aluno *novo = &aux;
+        fread(&aux,sizeof(Aluno),1,arq);
+        Aluno *novo = (Aluno*)malloc(sizeof(Aluno));
+        novo->numUSP = aux.numUSP;
+        novo->nota = aux.nota;
+        strcpy(novo->sobrenome,aux.sobrenome);
+        strcpy(novo->curso, aux.curso);
+        strcpy(novo->nome,aux.nome);
         return novo;
     } else{
         printf("\n      Aluno nao existe\n");
@@ -238,9 +233,9 @@ Aluno* addArquivo(FILE *arq,INDEX_Primario *vet,int tamPrim, int tamArq){
    if(op < 0){
         fseek(arq, 0, SEEK_END);
         fwrite(&novo.numUSP,sizeof(int),1,arq);
-        fwrite(novo.nome,sizeof(char),TAM,arq);
-        fwrite(novo.sobrenome,sizeof(char),TAM,arq);
-        fwrite(novo.curso,sizeof(char),TAM,arq);
+        fwrite(&novo.nome,sizeof(char),TAM,arq);
+        fwrite(&novo.sobrenome,sizeof(char),TAM,arq);
+        fwrite(&novo.curso,sizeof(char),TAM,arq);
         fwrite(&novo.nota,sizeof(float),1,arq);
         /* fwrite(&novo,sizeof(Aluno),1,arq);  */
 
@@ -260,9 +255,10 @@ int descarregarIndexPrim(FILE *arq, INDEX_Primario*vet, int tam){
     int i;
     fseek(arq,0,SEEK_SET);
     for(i =0; i < tam;i++){
-       fwrite(&vet[i].nusp,sizeof(int),1,arq); // qualquer coisa colocar o &(nsup  e rnn)
-        fwrite(&vet[i].RRN,sizeof(int),1,arq);
-         /*fwrite(&vet[i],sizeof(INDEX_Primario),1,arq);*/
+        if(vet[i].nusp > -1){
+            fwrite(&vet[i].nusp,sizeof(int),1,arq); // qualquer coisa colocar o &(nsup  e rnn)
+            fwrite(&vet[i].RRN,sizeof(int),1,arq);
+        }
     }
 
     return 1;
@@ -272,11 +268,12 @@ int descarregarLista(FILE *arq, list_index *list, int tam){
     if(!arq) return 0;
     if(!list) return -1;
     int i;
-    rewind(arq);
+    rewind(arq);// qualquer coisa colocar o &(nsup  e rnn)
     for(i =0; i < tam;i++){
-        fwrite(&list[i].nusp,sizeof(int),1,arq); // qualquer coisa colocar o &(nsup  e rnn)
-        fwrite(&list[i].prox,sizeof(int),1,arq);
-       /* fwrite(&list[i],sizeof(list_index),1,arq);*/
+        if(list[i].nusp >-1){            
+                fwrite(&list[i].nusp,sizeof(int),1,arq); 
+                fwrite(&list[i].prox,sizeof(int),1,arq);
+        }
     }
 
     return 1;
@@ -287,10 +284,12 @@ int descarregarIndexSec(FILE *arq, INDEX_Secundario *index, int tam){
     if(!index) return -1;
     int i;
     fseek(arq,0,SEEK_SET);
-    for(i =0 ; i < tam;i++){
-        fwrite(&index[i].sobrenome,sizeof(char),TAM,arq);
-        fwrite(&index[i].pos,sizeof(int),1,arq);
-       /* fwrite(&index[i],sizeof(INDEX_Secundario),1,arq);*/
+     char c[] ="*"; //  tria os cadrastro que tem o sobrenome *
+    for(i =0 ; i < tam;i++){   
+        if( strcmp(index[i].sobrenome,c) != 0){
+            fwrite(&index[i].sobrenome,sizeof(char),TAM,arq);
+            fwrite(&index[i].pos,sizeof(int),1,arq);
+        }        
     }
 
     return 1;
@@ -309,89 +308,135 @@ void menu(){
 }
 
 void imprimeAluno(Aluno*novo){
-    printf("nUSP:%d Nome:%s Sobrenome: %s Curso: %s Nota: %f\n",novo->numUSP,novo->nome,novo->sobrenome,novo->curso,novo->nota);
+    printf("\nnUSP:%d \nNome:%s \nSobrenome: %s \nCurso: %s \nNota: %f\n",novo->numUSP,novo->nome,novo->sobrenome,novo->curso,novo->nota);
 }
 
 
-/*int *buscaList(list_index *vetlist,int pos, int tamResult){
-    if(!vetlist) return NULL;
-    if(pos < 0) return NULL;
-    int i,j=1,flag = 1;
-    int *vet = (int*)malloc(sizeof(int));
-    vet[0] = vetlist[pos].nusp;
-
-    if( vetlist[pos].prox == -1){
-        tamResult = 1;
-        return vet; // caso s exista esse elemento de primeira
-    }
-    i = vetlist[pos].prox;
-    while(flag){
-        if( vetlist[i].prox == -1){
-            vet = (int*)realloc(vet,sizeof(int)*(j+1));
-            vet[j] =  vetlist[i].nusp;
-            pos = j;
-            flag = 0;
-        }else{
-            j++;
-            vet = (int*)realloc(vet,sizeof(int)*(j+1));
-            vet[j] =  vetlist[i].nusp;
-            i = vetlist[pos].prox;
-        }
-    }
-    tamResult = j;
-    return vet;
-} */
-
-
-
-int *buscaList(list_index *vet, int pos, int tamResult){
+int *buscaList(list_index *vet, int pos, int *tamResult){
     if(!vet) return NULL;
 
     if(pos < 0) return NULL;
-    int i,j=1,flag = 1;
+    int i=0,j=1,flag = 1,aux;
     int *novo= (int*)malloc(sizeof(int));
     novo[0] = vet[pos].nusp;
 
     if( vet[pos].prox == -1){
-        tamResult = 1;
+        *tamResult = 1;
         return novo; // caso s exista esse elemento de primeira
     }
+    i = vet[pos].prox;
 
-  do{
-        if( vet[i].prox == -1){
-            novo = (int*)realloc(vet,sizeof(int)*(j+1));
-            novo[j] =  vet[i].nusp;
-            pos = j;
+    do{
+        if(vet[i].prox == -1){            
+            novo = (int*)realloc(novo,sizeof(int)*(j+1));
+            novo[j] = vet[i].nusp;
+            j+=1;
             flag = 0;
         }else{
+            novo = (int*)realloc(novo,sizeof(int)*(j+1));
+            novo[j] = vet[i].nusp;
+            aux  = i;
+            i = vet[aux].prox;
             j+=1;
-            novo = (int*)realloc(vet,sizeof(int)*(j+1));
-            novo[j] =  vet[i].nusp;
-            i = vet[pos].prox;
         }
-    }  while (flag);
-    tamResult = j;
+    }while(flag);
+    
+   *tamResult = j;
     return novo;
 }
 /*
     
 */
 
-int buscaSobrenome(FILE *arq,INDEX_Secundario *vetSec,list_index *list, int tamList,int tamSec, char Sobrenome[]){
+int buscaSobrenome(FILE *arq,INDEX_Primario *vetPri ,INDEX_Secundario *vetSec,list_index *list,int tamPri, int tamList,int tamSec, char Sobrenome[]){
     if(!arq) return 0;
     if(!vetSec) return -1;
-    int tam =0, i;
+
+    int tam =1, i,num;
     int pos = Busca_Sec(vetSec,tamSec,Sobrenome);
-    int *vet = buscaList(list,pos,tam);
-    printf("Nusp com esse sobrenome:");
-    for(i =0;i < tam;i++){
-        printf("%d\n",vet[i]);
-    }
+    
+   if(pos>-1){
+        int *vet = buscaList(list,pos,&tam);
+        printf("\nNusp com esse sobrenome:\n");
+        for(i =0;i < tam;i++){
+            if(vet[i] > -1)
+                printf("    %d\n",vet[i]);
+        }
+        printf("\nEscolha um para ver os dados\n");
+        scanf("%d", &num);
+        Aluno *aux;
+        aux = PesquisaPrim(arq,vetPri,tamPri,num);
+        imprimeAluno(aux);
+        free(vet);
+    }else{
+        printf("Não existe alunos com esse sobrenome\n");
+    } 
+    
     return 1;
 }
 
 
-int removerNusp(INDEX_Primario *vetPri, int nusp){
+int removerNusp(INDEX_Primario *vetPri, list_index *list,int nusp, int tamPrim, int tamList){
+    int i;
+    int flag = 0;
+    for(i =0; i < tamPrim;i++){ // procura o nusp e negativa ele
+        if(vetPri[i].nusp == nusp){
+            int aux = vetPri[i].nusp *(-1);
+            vetPri[i].nusp = aux;
+            vetPri[i].RRN = -1;
+            flag =1;
+            break;
+        }
+    }
+   
+    if(flag){
+        for(i =0 ; i < tamList;i++){
+            if(list[i].){
 
-    return 1;
+            }
+        }
+        return 1;
+    }
+    return -1;
+}
+
+int removerSobrome(FILE *arq,INDEX_Primario *vetPri ,INDEX_Secundario *vetSec,list_index *list,int tamPri, int tamList,int tamSec, char Sobrenome[]){
+    if(!arq) return 0;
+    if(!vetSec) return -1;
+    if(!vetPri) return  -1;
+    int tam,i,j, flag = 1;
+    int pos =  Busca_Sec(vetSec,tamSec,Sobrenome);
+
+    if(pos> -1){
+        int *vet = buscaList(list,pos,&tam);
+        printf("\nNusp com esse sobrenome e que vão ser removidos:\n");
+        for(i =0;i < tam;i++){
+            if(vet[i] > -1)
+                printf("    %d\n",vet[i]);
+        }
+        for(i =0; i < tam;i++){
+            if(removerNusp(vetPri,vet[i], tamPri) != 1){
+                printf("    ERRO  ao remover o numUSP: %d\n",vet[i]);
+                flag = 0;
+            }
+        }
+        char c[] ="*";
+        strcpy(vetSec[pos].sobrenome,c); // muda o sobrenome para n dar erro
+
+        for(i = 0; i < tamList;i++){ // remove da lista
+            for(j =0; j < tam;j++){
+                if(vet[j] == list[i].nusp){
+                    list[i].nusp = list[i].nusp*(-1);
+                }
+            }
+        }
+    }else{
+        printf("    Nao existe esse Sobrenome\n");
+    }
+    
+    if(flag){
+        return 1;
+    }
+
+    return -1;
 }
