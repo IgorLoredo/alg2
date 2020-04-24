@@ -62,10 +62,9 @@ list_index *CarregarLista(FILE* arq,int *tam) {
     fseek(arq,0,SEEK_SET);
     for (i=0; i<aux; i++){
 
-        /*fread(&vet[i].nusp,sizeof(int),1,arq);
-        fread(&vet[i].prox,sizeof(int),1,arq);;*/
-         fread(&vet[i],sizeof(list_index),1,arq)
+         fread(&vet[i],sizeof(list_index),1,arq);
     }
+
     return vet;
 
 }
@@ -255,9 +254,9 @@ int descarregarIndexPrim(FILE *arq, INDEX_Primario**vet, int tam){
     int i;
     fseek(arq,0,SEEK_SET);
     for(i =0; i < tam;i++){
-        if(vet[i].nusp > -1){
-            fwrite(&vet[i].nusp,sizeof(int),1,arq); // qualquer coisa colocar o &(nsup  e rnn)
-            fwrite(&vet[i].RRN,sizeof(int),1,arq);
+        if((*vet)[i].nusp > -1){
+            fwrite(&(*vet)[i].nusp,sizeof(int),1,arq); // qualquer coisa colocar o &(nsup  e rnn)
+            fwrite(&(*vet)[i].RRN,sizeof(int),1,arq);
         }
     }
 
@@ -270,9 +269,9 @@ int descarregarLista(FILE *arq, list_index **list, int tam){
     int i;
     rewind(arq);// qualquer coisa colocar o &(nsup  e rnn)
     for(i =0; i < tam;i++){
-        if(list[i].nusp >-1){            
-                fwrite(&list[i].nusp,sizeof(int),1,arq); 
-                fwrite(&list[i].prox,sizeof(int),1,arq);
+        if((*list)[i].nusp >-1){            
+                fwrite(&(*list[i]).nusp,sizeof(int),1,arq); 
+                fwrite(&(*list[i]).prox,sizeof(int),1,arq);
         }
     }
 
@@ -285,7 +284,7 @@ int descarregarIndexSec(FILE *arq, INDEX_Secundario **index, int tam){
     int i;
     fseek(arq,0,SEEK_SET);
      char c[] ="*"; //  tria os cadrastro que tem o sobrenome *
-    for(i =0 ; i < tam;i++){   
+    for(i =0 ; i < tam;i++){
         if( strcmp((*index)[i].sobrenome,c) != 0){
             fwrite(&(*index)[i].sobrenome,sizeof(char),TAM,arq);
             fwrite(&(*index[i]).pos,sizeof(int),1,arq);
