@@ -376,7 +376,7 @@ int buscaSobrenome(FILE *arq,INDEX_Primario *vetPri ,INDEX_Secundario *vetSec,li
 }
 
 
-int removerNusp(INDEX_Primario *vetPri, list_index *list,int nusp, int tamPrim, int tamList){
+int removerNusp(INDEX_Primario **vetPri, list_index **list,int nusp, int tamPrim, int tamList){
     int i;
     int flag = 0;
     for(i =0; i < tamPrim;i++){ // procura o nusp e negativa ele

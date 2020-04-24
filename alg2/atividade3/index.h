@@ -66,11 +66,11 @@ int addAlunoArquivo(FILE*, Aluno *, int);
 
 
 // descarregar a memoria ram nos arquivos
-int descarregarIndexPrim(FILE *, INDEX_Primario*, int);
+int descarregarIndexPrim(FILE *, INDEX_Primario**, int);
 
-int descarregarIndexSec(FILE *, INDEX_Secundario *, int);
+int descarregarIndexSec(FILE *, INDEX_Secundario **, int);
 
-int descarregarLista(FILE *, list_index *, int);
+int descarregarLista(FILE *, list_index **, int);
 
 
 // menus
