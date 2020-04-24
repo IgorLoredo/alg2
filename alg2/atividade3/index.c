@@ -286,10 +286,10 @@ int descarregarIndexSec(FILE *arq, INDEX_Secundario **index, int tam){
     fseek(arq,0,SEEK_SET);
      char c[] ="*"; //  tria os cadrastro que tem o sobrenome *
     for(i =0 ; i < tam;i++){   
-        if( strcmp(index[i].sobrenome,c) != 0){
-            fwrite(&index[i].sobrenome,sizeof(char),TAM,arq);
-            fwrite(&index[i].pos,sizeof(int),1,arq);
-        }        
+        if( strcmp((*index)[i].sobrenome,c) != 0){
+            fwrite(&(*index)[i].sobrenome,sizeof(char),TAM,arq);
+            fwrite(&(*index[i]).pos,sizeof(int),1,arq);
+        }
     }
 
     return 1;
@@ -354,7 +354,7 @@ int buscaSobrenome(FILE *arq,INDEX_Primario *vetPri ,INDEX_Secundario *vetSec,li
 
     int tam =1, i,num;
     int pos = Busca_Sec(vetSec,tamSec,Sobrenome);
-    
+
    if(pos>-1){
         int *vet = buscaList(list,pos,&tam);
         printf("\nNusp com esse sobrenome:\n");
@@ -370,8 +370,8 @@ int buscaSobrenome(FILE *arq,INDEX_Primario *vetPri ,INDEX_Secundario *vetSec,li
         free(vet);
     }else{
         printf("Não existe alunos com esse sobrenome\n");
-    } 
-    
+    }
+
     return 1;
 }
 
@@ -379,20 +379,22 @@ int buscaSobrenome(FILE *arq,INDEX_Primario *vetPri ,INDEX_Secundario *vetSec,li
 int removerNusp(INDEX_Primario **vetPri, list_index **list,int nusp, int tamPrim, int tamList){
     int i;
     int flag = 0;
+    int aux;
     for(i =0; i < tamPrim;i++){ // procura o nusp e negativa ele
-        if(vetPri[i].nusp == nusp){
-            int aux = vetPri[i].nusp *(-1);
-            vetPri[i].nusp = aux;
-            vetPri[i].RRN = -1;
+        if((*vetPri)[i].nusp == nusp){
+            aux = (*vetPri)[i].nusp*(-1);
+            (*vetPri)[i].nusp = aux;
+            (*vetPri)[i].RRN = -1;
             flag =1;
             break;
         }
     }
-   
+
     if(flag){
         for(i =0 ; i < tamList;i++){
-            if(list[i].){
-
+            if((*list)[i].nusp == nusp){
+                aux = (*list)[i].nusp*(-1);
+                (*list)[i].nusp = aux;
             }
         }
         return 1;
@@ -415,7 +417,7 @@ int removerSobrome(FILE *arq,INDEX_Primario *vetPri ,INDEX_Secundario *vetSec,li
                 printf("    %d\n",vet[i]);
         }
         for(i =0; i < tam;i++){
-            if(removerNusp(&vetPri,&vet[i],tamList, tamPri) != 1){
+            if(removerNusp(&vetPri,&list,vet[i],tamList, tamPri) != 1){
                 printf("    ERRO  ao remover o numUSP: %d\n",vet[i]);
                 flag = 0;
             }
