@@ -56,7 +56,7 @@ int main(void) {
             case 2:
                 printf("\nInsira o nUSP\n");
                 scanf("%d",&num);
-                aux = PesquisaPrim(arq,vetPri,listVet,tamPri,tamList,num);
+                aux = PesquisaPrim(arq,vetPri,tamPri,num);
                 if (aux){
                     imprimeAluno(aux);
                 }

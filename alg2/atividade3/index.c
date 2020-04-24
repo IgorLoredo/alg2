@@ -249,7 +249,7 @@ Aluno* addArquivo(FILE *arq,INDEX_Primario *vet,int tamPrim, int tamArq){
      return NULL;
 }
 
-int descarregarIndexPrim(FILE *arq, INDEX_Primario*vet, int tam){
+int descarregarIndexPrim(FILE *arq, INDEX_Primario**vet, int tam){
     if(!arq) return 0;
     if(!vet) return -1;
     int i;
@@ -264,7 +264,7 @@ int descarregarIndexPrim(FILE *arq, INDEX_Primario*vet, int tam){
     return 1;
 }
 
-int descarregarLista(FILE *arq, list_index *list, int tam){
+int descarregarLista(FILE *arq, list_index **list, int tam){
     if(!arq) return 0;
     if(!list) return -1;
     int i;
@@ -279,7 +279,7 @@ int descarregarLista(FILE *arq, list_index *list, int tam){
     return 1;
 }
 
-int descarregarIndexSec(FILE *arq, INDEX_Secundario *index, int tam){
+int descarregarIndexSec(FILE *arq, INDEX_Secundario **index, int tam){
     if(!arq) return 0;
     if(!index) return -1;
     int i;
@@ -415,7 +415,7 @@ int removerSobrome(FILE *arq,INDEX_Primario *vetPri ,INDEX_Secundario *vetSec,li
                 printf("    %d\n",vet[i]);
         }
         for(i =0; i < tam;i++){
-            if(removerNusp(vetPri,vet[i], tamPri) != 1){
+            if(removerNusp(&vetPri,&vet[i],tamList, tamPri) != 1){
                 printf("    ERRO  ao remover o numUSP: %d\n",vet[i]);
                 flag = 0;
             }
