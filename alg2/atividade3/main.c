@@ -29,12 +29,7 @@ int main(void) {
     int tamArq = tamArquivo(arq);
     list_index a;
     rewind(list);
-    
-   /* for(int i =0 ; i< tamPri;i++){
-            //
-            fread(&a,sizeof(list_index),1,arq);
-            printf("nsusp %d %d\n",a.nusp,a.prox);
-    } */
+
      Aluno *aux;
     do{
         menu();
