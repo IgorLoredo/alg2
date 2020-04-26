@@ -49,6 +49,8 @@ void GeraIndex(FILE*,INDEX**,int*);
 void imprimeRegistro( ALUNO);
 
 void removeRegistro(FILE *, int );
+
+
 void removeIndex(INDEX**,int);
 
 void remover(FILE *,INDEX **, int, int);
