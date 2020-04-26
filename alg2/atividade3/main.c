@@ -29,8 +29,7 @@ int main(void) {
     int tamArq = tamArquivo(arq);
     list_index a;
     rewind(list);
-
-     Aluno *aux;
+    Aluno *aux;
     do{
         menu();
         scanf("%d", &comando);
@@ -51,8 +50,7 @@ int main(void) {
             case 2:
                 printf("\nInsira o nUSP\n");
                 scanf("%d",&num);
-                aux = PesquisaPrim(arq,vetPri,listVet
-                ,tamPri,tamList,num);
+                aux = PesquisaPrim(arq,vetPri,tamList,num);
                 if (aux){
                     imprimeAluno(aux);
                 }
@@ -66,7 +64,7 @@ int main(void) {
             case 4: // remover pelo nusp
                 printf("\nInsira o nUSP\n");
                 scanf("%d",&num);
-                if(removerNusp(&vetPri,&list, num, tamList, tamPri) == 1){
+                if(removerNusp(&vetPri,&listVet,num, tamList, tamPri) == 1){
                     printf("\n      Removido com Sucesso!!\n");
                 }else{
                     printf("\n      ERRO ao remover!!\n");
@@ -75,7 +73,7 @@ int main(void) {
             case 5: // remover pelo sobrenome
                 printf("Insira o Sobrenome:\n");
                 scanf(" %[^\n]s",sobrenome);
-                removerSobrome(arq, vetPri, vetSec, listVet, tamPri, tamList, tamSec, sobrenome);
+                removerSobrome(arq, &vetPri, &vetSec, &listVet, tamPri, tamList, tamSec, sobrenome);
             
             break;
             case 6: // sair
@@ -90,7 +88,7 @@ int main(void) {
 
     }while(flag); 
 
-    for(int i =0 ; i< tamPri;i++){       
+    for(int i =0 ; i< tamPri;i++){
         printf("nsusp %d %d\n",listVet[i].nusp, listVet[i].prox);
     }
 

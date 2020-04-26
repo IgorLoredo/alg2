@@ -90,7 +90,7 @@ int buscaSobrenome(FILE *,INDEX_Primario*, INDEX_Secundario *,list_index *, int,
 // remover
 int removerNusp(INDEX_Primario**,list_index**,int, int, int);
 
-int removerSobrome(FILE *,INDEX_Primario ** ,INDEX_Secundario **,list_index *,int, int ,int,char[]);
+int removerSobrome(FILE *,INDEX_Primario ** ,INDEX_Secundario **,list_index **,int, int ,int,char[]);
 
 
-#endiff
+#endif
