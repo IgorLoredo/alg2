@@ -85,7 +85,7 @@ int BuscaBinaria_Sec(INDEX_Secundario *, int , int , char[]);
 
 int *buscaList(list_index *,int, int*);
 
-int buscaSobrenome(FILE *,INDEX_Primario**, INDEX_Secundario **,list_index *, int, int ,int , char []);
+int buscaSobrenome(FILE *,INDEX_Primario*, INDEX_Secundario *,list_index *, int, int ,int , char []);
 
 // remover
 int removerNusp(INDEX_Primario**,list_index**,int, int, int);
@@ -93,4 +93,4 @@ int removerNusp(INDEX_Primario**,list_index**,int, int, int);
 int removerSobrome(FILE *,INDEX_Primario ** ,INDEX_Secundario **,list_index *,int, int ,int,char[]);
 
 
-#endif
+#endiff
