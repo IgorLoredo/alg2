@@ -66,11 +66,11 @@ int addAlunoArquivo(FILE*, Aluno *, int);
 
 
 // descarregar a memoria ram nos arquivos
-int descarregarIndexPrim(FILE *, INDEX_Primario**, int);
+int descarregarIndexPrim(FILE *, INDEX_Primario*, int);
 
-int descarregarIndexSec(FILE *, INDEX_Secundario **, int);
+int descarregarIndexSec(FILE *, INDEX_Secundario *, int);
 
-int descarregarLista(FILE *, list_index **, int);
+int descarregarLista(FILE *, list_index *, int);
 
 
 // menus
@@ -81,16 +81,16 @@ void imprimeAluno(Aluno*);
 // buscas
 int BuscaBinaria_Prim(INDEX_Primario *,int,int, int);
 
-int BuscaBinaria_Sec(INDEX_Secundario **, int , int , char[]);
+int BuscaBinaria_Sec(INDEX_Secundario *, int , int , char[]);
 
 int *buscaList(list_index *,int, int*);
 
-int buscaSobrenome(FILE *,INDEX_Primario*, INDEX_Secundario *,list_index *, int, int ,int , char []);
+int buscaSobrenome(FILE *,INDEX_Primario**, INDEX_Secundario **,list_index *, int, int ,int , char []);
 
 // remover
 int removerNusp(INDEX_Primario**,list_index**,int, int, int);
 
-int removerSobrome(FILE *,INDEX_Primario * ,INDEX_Secundario *,list_index *,int, int ,int,char[]);
+int removerSobrome(FILE *,INDEX_Primario ** ,INDEX_Secundario **,list_index *,int, int ,int,char[]);
 
 
 #endif
