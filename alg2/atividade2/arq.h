@@ -7,6 +7,8 @@
 #include <stdio.h> // adiciona a biblioteca par funcionar os pondeiros
 
 #define TAM 16
+#define DEL "*"
+
 
 struct Index{ // 12 bytes
     int id;// numero usp
@@ -30,13 +32,15 @@ void criaIndex(FILE *);
 
 int LerIndex(FILE*, INDEX**);
 
-void insereAluno(FILE *,ALUNO*, int, long);
+void insereAluno(FILE *,ALUNO, int, long);
 
 void insereIndex(INDEX**,long,int, int*);
 
 void ordenaIndex(INDEX**, int);
 
-int pesquisaIndex(FILE*,INDEX **,ALUNO*,int, int);
+int pesquisaIndex(FILE*,INDEX **,ALUNO,int, int);
+
+void pesquisaRegistro();
 
 void insereRegistro(FILE*,INDEX**,int, int, long);
 

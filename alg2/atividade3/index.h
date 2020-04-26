@@ -36,7 +36,7 @@ typedef struct index_primario INDEX_Primario;
 typedef struct index_secundario INDEX_Secundario;
 typedef struct LIST_INDEX list_index;
 
-
+//criar arquivos e carregar
 FILE *criarArquivo(char *);
 
 INDEX_Primario *CarregarIndexPri(FILE*,int*);
@@ -90,7 +90,7 @@ int buscaSobrenome(FILE *,INDEX_Primario*, INDEX_Secundario *,list_index *, int,
 // remover
 int removerNusp(INDEX_Primario**,list_index**,int, int, int);
 
-int removerSobrome(FILE *,INDEX_Primario ** ,INDEX_Secundario **,list_index **,int, int ,int,char[]);
+int removerSobrenome(FILE *,INDEX_Primario ** ,INDEX_Secundario **,list_index **,int, int ,int,char[]);
 
 
 #endif

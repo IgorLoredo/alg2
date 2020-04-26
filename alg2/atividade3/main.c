@@ -8,7 +8,7 @@
  
 int main(void) {
     int comando, flag = 1;
-    int tamPri, tamSec, tamList,num;
+    int tamPri =0, tamSec =0, tamList =0,num;
     char sobrenome[TAM];
 
     // cria pega os arquivos 
@@ -27,9 +27,10 @@ int main(void) {
     
     //pega o tamanho do arquivo
     int tamArq = tamArquivo(arq);
-    list_index a;
+
     rewind(list);
     Aluno *aux;
+
     do{
         menu();
         scanf("%d", &comando);
@@ -42,7 +43,6 @@ int main(void) {
                     tamSec +=1;
                     tamPri +=1;
                     tamArq +=1; 
-                    printf("list %d prim %d sec %d  arq %d\n",tamList,tamPri,tamSec,tamArq);
                 }/* */
             aux = NULL;
             break;
@@ -73,10 +73,15 @@ int main(void) {
             case 5: // remover pelo sobrenome
                 printf("Insira o Sobrenome:\n");
                 scanf(" %[^\n]s",sobrenome);
-                removerSobrome(arq, &vetPri, &vetSec, &listVet, tamPri, tamList, tamSec, sobrenome);
+                removerSobrenome(arq, &vetPri, &vetSec, &listVet, tamPri, tamList, tamSec, sobrenome);
             
             break;
-            case 6: // sair
+
+            case 6:
+                printf("Total de Regitros:   %d\n",tamPri);
+                break;
+
+            case 7: // sair
                 flag = 0;
                 printf("\n          Saindo e Salvando dados\n\n");
             break;
@@ -88,9 +93,6 @@ int main(void) {
 
     }while(flag); 
 
-    for(int i =0 ; i< tamPri;i++){
-        printf("nsusp %d %d\n",listVet[i].nusp, listVet[i].prox);
-    }
 
 
     // carrega arquivos
@@ -105,4 +107,4 @@ int main(void) {
     fclose(list);
 
     return 0;
-}
+}}

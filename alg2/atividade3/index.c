@@ -306,7 +306,8 @@ void menu(){
     printf("    3 - Buscar pelo sobrenome\n");
     printf("    4 - Remover pelo nUSP\n");
     printf("    5 - Remover pelo Sobrenome\n");
-    printf("    6 - Sair\n");
+    printf("    6 - Total de regitros\n");
+    printf("    7 - Sair\n");
     printf("*******************************\n\n");
 }
 
@@ -394,7 +395,7 @@ int removerNusp(INDEX_Primario **vetPri, list_index **list,int nusp, int tamPrim
             break;
         }
     }
-
+    // negativa tbm na lista
     if(flag){
         for(i =0 ; i < tamList;i++){
             if((*list)[i].nusp == nusp){
@@ -407,12 +408,12 @@ int removerNusp(INDEX_Primario **vetPri, list_index **list,int nusp, int tamPrim
     return -1;
 }
 
-int removerSobrome(FILE *arq,INDEX_Primario **vetPri ,INDEX_Secundario **vetSec,list_index **list,int tamPri, int tamList,int tamSec, char Sobrenome[]){
+int removerSobrenome(FILE *arq,INDEX_Primario **vetPri ,INDEX_Secundario **vetSec,list_index **list,int tamPri, int tamList,int tamSec, char Sobrenome[]){
     if(!arq) return 0;
     if(!vetSec) return -1;
     if(!vetPri) return  -1;
 
-    int tam,i,j, flag = 1;
+    int tam,i,j, flag = 1,aux;
     // ver se tem o
     int pos =  Busca_Sec(*vetSec,tamSec,Sobrenome);
 
@@ -423,19 +424,22 @@ int removerSobrome(FILE *arq,INDEX_Primario **vetPri ,INDEX_Secundario **vetSec,
             if(vet[i] > -1)
                 printf("    %d\n",vet[i]);
         }
+        
         for(i =0; i < tam;i++){
             if(removerNusp(&(*vetPri),&(*list),vet[i],tamList, tamPri) != 1){
                 printf("    ERRO  ao remover o numUSP: %d\n",vet[i]);
                 flag = 0;
             }
         }
+
         char c[] ="*";
         strcpy((*vetSec)[pos].sobrenome,c); // muda o sobrenome para n dar erro
 
         for(i = 0; i < tamList;i++){ // remove da lista
             for(j =0; j < tam;j++){
                 if(vet[j] == (*list)[i].nusp){
-                    (*list)[i].nusp = (*list)[i].nusp*(-1);
+                    aux = (*list)[i].nusp*(-1);
+                    (*list)[i].nusp = aux;
                 }
             }
         }
@@ -449,4 +453,4 @@ int removerSobrome(FILE *arq,INDEX_Primario **vetPri ,INDEX_Secundario **vetSec,
     }
 
     return -1;
-}
+} 
