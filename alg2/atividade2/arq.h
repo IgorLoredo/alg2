@@ -34,7 +34,7 @@ void criaArquivo(FILE *);
 void criaIndex(FILE *);
 
 
-INDEX* LerIndex(FILE* , int *);
+INDEX* LerIndex(FILE*);
 
 
 int insereReg(FILE *,INDEX*,int, int);
@@ -55,7 +55,7 @@ int pesquisaIndex(FILE*,INDEX *,ALUNO,int, int);
 void pesquisaRegistro();
 
 
-void GeraIndex(FILE*,INDEX*,int*);
+int GeraIndex(FILE*,INDEX*,int);
 
 
 void imprimeRegistro( ALUNO);

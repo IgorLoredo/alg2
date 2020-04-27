@@ -10,7 +10,6 @@ int main(void) {
     int tamIndex =0;
     int endereco=0;
     ALUNO aux;
-    INDEX *vetIndex = (INDEX*)malloc(sizeof(INDEX));
     FILE *df = NULL;
     FILE *index = NULL;
 
@@ -31,13 +30,14 @@ int main(void) {
       }
 	} while(index== NULL); // ver se ja tem o arquivo e cria caso no exista
 
-    vetIndex = LerIndex(index, &tamIndex); // pega o tamanho do fileindex junto e colcoa em um vetor
-
+    INDEX *vetIndex = LerIndex(index); // pega o tamanho do fileindex junto e colcoa em um vetor
+    tamIndex = (int)(ftell(index)/sizeof(INDEX));
     endereco = tamArquivo(df);
     
     for(int i = 0; i < tamIndex; i++){
         printf("%d %d\n", vetIndex[i].id, vetIndex[i].rrn);
     }
+
     do {
         menu();
         scanf("%d",&comando);
@@ -55,20 +55,13 @@ int main(void) {
        case 2:
             printf("\nInseri nUSP:\n");
             scanf("%d",&nusp);     
-            if(pesquisaIndex(df,vetIndex,aux,nusp,tamIndex) != 0 )
-               imprimeRegistro(aux);
-             else
-                printf("\t\nRegistro nao existe ou foi apagado\n");
-            
+            pesquisaIndex(df,vetIndex,aux,nusp,tamIndex);            
         break;
 
         case 3:
             printf("\nInseri nUSP:\n");
             scanf("%d",&nusp);
-            if(pesquisaIndex(df,vetIndex,aux,nusp,tamIndex) != 0 )
                remover(df,vetIndex,tamIndex,nusp);
-             else
-                printf("\t\nRegistro nao existe ou ja foi apagado\n");
         break;
 
         case 4:
@@ -81,8 +74,8 @@ int main(void) {
         break;
         }
 	} while(flag); 
-
-    //GeraIndex(index,vetIndex,&tamIndex);
+    
+    GeraIndex(index,vetIndex,tamIndex);
     fclose(index);
     fclose(df);
 
