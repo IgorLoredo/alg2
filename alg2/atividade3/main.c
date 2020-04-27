@@ -94,11 +94,11 @@ int main(void) {
     }while(flag); 
 
 
-
+    
     // carrega arquivos
     descarregarIndexPrim(index_prim,vetPri,tamPri);
     descarregarIndexSec(index_sec,vetSec,tamSec);
-    descarregarLista(list,listVet,tamList);
+    descarregarLista(list,listVet,tamList); 
 
     // fecha arquivos
     fclose(arq);
@@ -107,4 +107,4 @@ int main(void) {
     fclose(list);
 
     return 0;
-}}
+}
