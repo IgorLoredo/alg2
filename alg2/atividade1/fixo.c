@@ -3,12 +3,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
+#include <strings.h>
 
 #define TAM 16
 // cadrastar, pesquisar e apresentar resultados
 // nusp, nome, sobrenome,curso e nota
-
+//#define DEL "*"
 
 struct tipoAluno{
 	int numUSP;
@@ -20,100 +21,135 @@ struct tipoAluno{
 
 typedef struct tipoAluno Aluno;
 
-void criaArquivo(FILE *df) {
-
-    if (df== NULL) {
-        df= fopen("alunos.dad", "w+");        /* Se nao existir, cria o arquivo de dados */
-        fclose(df);
-        df= NULL;
+FILE *criarArquivo(char *arquivo){
+    FILE *arq;
+    arq = fopen(arquivo, "r+");
+    if(!arq) {
+        arq = fopen(arquivo,"w+");
     }
-} // cria arquivo
+    if(!arq) {
+        printf("Erro ao criar/abrir %s\n",arquivo);
+        return NULL;
+    }
+    return arq;
+}
 
-void insereRegistro(FILE *df,int *endereco, int nusp){
+void insereRegistro(FILE *df, int *endereco ){
     Aluno novo;
-    novo.numUSP = nusp;
-    printf("Coloque seu nome:\n");
-    scanf("%s",novo.nome);
-    printf("Sobrenome:\n");
-     scanf("%s",novo.sobrenome);
-    printf("Curso:\n");
-     scanf("%s",novo.curso);
-    printf("Nota:\n");
-     scanf("%f",&novo.nota);
-    // posiciona o ponteiro no ultimo byte e add um novo arquivo
+    printf("Nome:");
+    scanf(" %[^\n]s",novo.nome);
+    printf("Sobrenome:");
+    scanf(" %[^\n]s",novo.sobrenome);
+    printf("Curso:");
+    scanf(" %[^\n]s",novo.curso);
+    printf("nUSP:");
+    scanf("%d",&novo.numUSP);
+    printf("Nota:");
+    scanf("%f",&novo.nota);;
+    rewind(df);
     fseek(df,*endereco,0); 
-    fprintf(df,"%d %s %s %s %f ",novo.numUSP,novo.nome,novo.sobrenome,novo.curso,novo.nota); 
-    *endereco = *endereco + sizeof(Aluno); // guarda ultimo 
-   /* fseek(df,0,SEEK_END);
-    long tam = ftell(df);
-    printf("%d fetell%ld\n",*endereco,tam); */
-} 
- 
-int procuraResgistro(FILE *df, int nusp, Aluno *aux){ // procura regitro e manda ele por refeencia
-    fseek(df,0,0);
-    while(fscanf(df,"\n%d %s %s %s %f",&aux->numUSP,aux->nome,aux->sobrenome,aux->curso,&aux->nota) != EOF){
-        if(nusp == aux->numUSP){
-            return 1;
+    //fprintf(df,"\n%d %s %s %s %f",novo->numUSP,novo->nome,novo->sobrenome,novo->curso,novo->nota);
+    fwrite(&novo, sizeof(Aluno), 1, df);
+    *endereco = *endereco + sizeof(Aluno);
+
+}
+
+void imprimeAluno(Aluno*novo){
+    printf("nUSP:%d Nome:%s Sobrenome: %s Curso: %s Nota: %f\n",novo->numUSP,novo->nome,novo->sobrenome,novo->curso,novo->nota);
+}
+
+Aluno *procuraResgistro(FILE *arq, int nusp, int tamArq){
+    int i;
+    int flag = 0,tam  = (int)(tamArq/sizeof(Aluno));
+    rewind(arq);
+    Aluno *novo;
+    Aluno aux;
+    printf("%d\n",tam);
+    for(i =0;i < tam;i++){
+        fread(&aux,sizeof(Aluno),1,arq);
+        if(aux.numUSP == nusp){
+            flag = 1;
+            break;
         }
     }
-    return 0;// caso nao encontre o registro
+    if(flag){
+        Aluno *novo = (Aluno*)malloc(sizeof(Aluno));
+        novo->numUSP = aux.numUSP;
+        novo->nota = aux.nota;
+        strcpy(novo->sobrenome,aux.sobrenome);
+        strcpy(novo->curso, aux.curso);
+        strcpy(novo->nome,aux.nome);
+        return novo;
+    }
+    return NULL;
 }
 
-void Registros(FILE *arq){ // ler e imprime todos os arquivos
-    Aluno novo;
-    fseek(arq,0,0); 
-    while(fscanf(arq,"\n%d %s %s %s %f",&novo.numUSP,novo.nome,novo.sobrenome,novo.curso,&novo.nota) != EOF){
-        printf("nUSP:%d Nome:%s Sobrenome: %s Curso: %s Nota: %f\n",novo.numUSP,novo.nome,novo.sobrenome,novo.curso,novo.nota);
+
+int remover(FILE *arq, int nusp, int tamArq){
+
+    int i,flag = 0,tam  = (int)(tamArq/sizeof(Aluno));
+    rewind(arq);
+    Aluno *novo;
+    Aluno aux;
+    for(i =0;i < tam;i++){
+        fread(&aux,sizeof(Aluno),1,arq);
+        if(aux.numUSP == nusp){
+            flag = 1;
+            break;
+        }
     }
+    if(flag == 1){
+        fseek(arq, -sizeof(Aluno), SEEK_CUR);
+        //fwrite(DEL, sizeof(DEL),1, arq);
+        char c ='*';
+        fputc(c, arq);
+    }
+    
+    return -1;
 }
+
+
+
 
 int main(void) {
-    FILE *df = NULL;
-    int operacao = 0;
-    int ultimoEnd = 0, nusp;
-    Aluno aluno;
-
-    do {
-	    df= fopen("alunos.dad", "w+");        
-	  if (df == NULL){
-           criaArquivo(df);
-           printf("\nArquivos criado\n\n");
-      }
-	} while(df== NULL); // ver se ja tem o arquivo e cria caso no exista
+    int num,operacao = 0;
+    Aluno *aux;
+    FILE *df = criarArquivo("alunos.dad");
     
-    do{ // roda pelo menos uma vez
-        printf("\nOperacoes:\n- Gravar    1\n- Pesquisar 2\n- Imprimir Registros 3\n- Finalizar 4\n\n");
+    fseek(df,0, SEEK_END);
+    int ultimoEnd =ftell(df);
+
+    do{
+        printf("\nOperacoes:\n- Gravar    1\n- Pesquisar 2\n- Remover   3\n- Sair      4\n");
         scanf("%d",&operacao);
         if(operacao == 1){
-            printf("\nInsere nUSP\n");
-            scanf("%d",&nusp);
-            if(procuraResgistro(df,nusp, &aluno) == 0){
-                insereRegistro(df,&ultimoEnd, nusp); // insere o arquivo
-                //printf("\nAluno registrado:\nnUSP:%d \nNome:%s \nSobrenome: %s\nCurso: %s\nNota: %f\n",aluno.numUSP,aluno.nome,aluno.sobrenome,aluno.curso,aluno.nota);
-
-            }else{
-                printf("\nJa existe o registro\n");
-            }
+            insereRegistro(df,&ultimoEnd);
         }
 
-        else if(operacao == 2){
-            printf("Digite o nUSP:\n");
-            scanf("%d",&nusp);
-            if(procuraResgistro(df,nusp, &aluno) == 1){ // verificar se o registro existe
-                printf("\nnUSP:%d \nNome:%s \nSobrenome: %s\nCurso: %s\nNota: %f\n",aluno.numUSP,aluno.nome,aluno.sobrenome,aluno.curso,aluno.nota);
+        if(operacao == 2){
+            printf("\nInsira o nUSP\n");
+                scanf("%d",&num);
+                aux  = procuraResgistro(df,num,ultimoEnd);
+                if (aux){
+                    imprimeAluno(aux);
+                }else{
+                    printf("Aluno nao encontrado\n");
+                }
+                aux = NULL;
+        }
+        if(operacao == 3){
+            printf("\nInsira o nUSP para Remover\n");
+            scanf("%d",&num);
+            if(remover(df, num,ultimoEnd)){
+                printf("Removeu com Sucesso\n");
             }else{
-                printf("\nNo existe esse registro");
+                printf("ERRO ao Remover");
             }
         }
-
-       else if (operacao == 3){
-           Registros(df);
-        } 
 
     }while(operacao != 4);
 
+   // free(aux);
     fclose(df);
-    return 0;
+  return 0;
 }
-
-
