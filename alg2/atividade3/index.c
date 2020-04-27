@@ -408,15 +408,16 @@ int removerNusp(INDEX_Primario **vetPri, list_index **list,int nusp, int tamPrim
     return -1;
 }
 
+
 int removerSobrenome(FILE *arq,INDEX_Primario **vetPri ,INDEX_Secundario **vetSec,list_index **list,int tamPri, int tamList,int tamSec, char Sobrenome[]){
-    if(!arq) return 0;
-    if(!vetSec) return -1;
-    if(!vetPri) return  -1;
+    if(!arq) return -1;
+    if(!vetSec) return -2;
+    if(!vetPri) return  -3;
 
     int tam,i,j, flag = 1,aux;
-    // ver se tem o
+    // ver se tem o a posicao
     int pos =  Busca_Sec(*vetSec,tamSec,Sobrenome);
-
+    // caso exista
     if(pos> -1){
         int *vet = buscaList(*list,pos,&tam);
         printf("\nNusp com esse sobrenome e que vão ser removidos:\n");
@@ -433,6 +434,7 @@ int removerSobrenome(FILE *arq,INDEX_Primario **vetPri ,INDEX_Secundario **vetSe
         }
 
         char c[] ="*";
+        fputc('*', arq);
         strcpy((*vetSec)[pos].sobrenome,c); // muda o sobrenome para n dar erro
 
         for(i = 0; i < tamList;i++){ // remove da lista
@@ -452,5 +454,5 @@ int removerSobrenome(FILE *arq,INDEX_Primario **vetPri ,INDEX_Secundario **vetSe
         return 1;
     }
 
-    return -1;
-} 
+    return 0;
+}
