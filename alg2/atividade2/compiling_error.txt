@@ -1,4 +1,0 @@
-/home/igor_loredo/Documentos/trabalhos 3 semestre/alg2/atividade2/lab2.c:6:10: fatal error: arq.h: Arquivo ou diretório inexistente
- #include <arq.h>
-          ^~~~~~~
-compilation terminated.

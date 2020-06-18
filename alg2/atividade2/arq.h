@@ -7,10 +7,12 @@
 #include <stdio.h> // adiciona a biblioteca par funcionar os pondeiros
 
 #define TAM 16
+#define DEL "*"
+
 
 struct Index{ // 12 bytes
     int id;// numero usp
-    long byte; // codigo no arquivo 
+    int rrn; // codigo no arquivo 
 };
 
 struct tipoAluno {  // 56 bytes
@@ -22,33 +24,59 @@ struct tipoAluno {  // 56 bytes
 };
 
 typedef struct tipoAluno ALUNO;
+
 typedef struct Index INDEX;
+
 
 void criaArquivo(FILE *);
 
+
 void criaIndex(FILE *);
 
-int LerIndex(FILE*, INDEX**);
 
-void insereAluno(FILE *,ALUNO*, int, long);
+INDEX* LerIndex(FILE*);
 
-void insereIndex(INDEX**,long,int, int*);
 
-void ordenaIndex(INDEX**, int);
+int insereReg(FILE *,INDEX*,int, int);
 
-int pesquisaIndex(FILE*,INDEX **,ALUNO*,int, int);
 
-void insereRegistro(FILE*,INDEX**,int, int, long);
+int insereIndex(INDEX*x,int , int , int *);
 
-void GeraIndex(FILE*,INDEX**,int*);
+
+int tamArquivo(FILE*);
+
+
+void ordenaIndex(INDEX*, int);
+
+
+int pesquisaIndex(FILE*,INDEX *,ALUNO,int, int);
+
+
+void pesquisaRegistro();
+
+
+int GeraIndex(FILE*,INDEX*,int);
+
 
 void imprimeRegistro( ALUNO);
 
+
 void removeRegistro(FILE *, int );
-void removeIndex(INDEX**,int);
 
-void remover(FILE *,INDEX **, int, int);
 
-int PesquisaBinaria (INDEX **, int, int );
+void removeIndex(INDEX*,int);
+
+
+void remover(FILE *,INDEX *, int, int);
+
+
+int PesquisaBinaria (INDEX *, int, int );
+
+
+ALUNO CriarAluno();
+
+// menu
+void menu();
+
 
 #endif

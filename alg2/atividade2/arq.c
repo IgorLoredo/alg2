@@ -3,74 +3,76 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <arq.h>
-
-
+#include "arq.h"
 
 void criaArquivo(FILE *df) {
     if (df== NULL) {
-        df= fopen("alunos.dad", "w+");    // cria arquivo caso n tenha     
-
+        df= fopen("alunos.dad", "w+");    // cria arquivo caso n tenha 
         fclose(df);
         df= NULL;
     }
 } // tudo ok
+
+
 void criaIndex(FILE *df) {
     if (df== NULL) {
-        df= fopen("index.dad", "w+");       
+        df= fopen("index.dad", "w+");      
         fclose(df);
         df= NULL;
     }
 }
 
-int LerIndex(FILE* index, INDEX**novo){ // ler conteudo do arquivo index e coloca em um vetor index
-    if(!index) return -1;
+
+int tamArquivo(FILE*arq){ // acha o tamanho do arquivo de armazenamento
+    if(!arq) return 0;
+    fseek(arq,0,SEEK_END);
+    int aux=((int) ftell(arq))/sizeof(ALUNO);
+    return aux;
+}
+
+
+INDEX* LerIndex(FILE* index){ // ler conteudo do arquivo index e coloca em um vetor index
+    if(!index) return NULL;
     int quant=0 ,i;
-    rewind(index);
     fseek(index, 0, SEEK_END);
-    quant = ((int) ftell(index))/sizeof(INDEX); 
-    novo = (INDEX**)realloc(novo,quant*sizeof(INDEX*));
-    rewind(index);
+    quant = (int)(ftell(index)/sizeof(INDEX));
+    INDEX* novo = (INDEX*)malloc(sizeof(INDEX)*(quant+1)); 
+    fseek(index, 0, SEEK_SET);
     if(quant > 0){
         for(i =0; i < quant;i++){
-	    fread(&index[i], sizeof(INDEX*), 1, index); // Faz leitura dos indices
+	        fread(&novo[i], sizeof(INDEX), 1, index); 
+           // printf("      %d  f", novo[i].id);
         }
+        
     }
-    if(quant)
-        return quant;
-    else 
-        return 0;
-}  // tudo ok
+    return novo;
+}  
 
 
-
-void ordenaIndex(INDEX** index, int tam){ // ordena os index
+void ordenaIndex (INDEX *index, int tam){ // ordena os index
     int i,j;
-    INDEX** novo = (INDEX**)malloc(sizeof(INDEX*));
+    INDEX novo;
     for(i=0;i<tam;i++){
         for(j=0;j<tam-1;j++){
-            if(index[j] >index[j+1]){
-                *novo = index[j];
+            if(index[j].id > index[j+1].id){
+                novo = index[j];
                 index[j] = index[j+1];
-                index[j+1] = *novo;
+                index[j+1] = novo;
             }
         }
     }
 } 
 
 
-
-
-int PesquisaBinaria (INDEX**vet, int chave, int Tam){
-     int inf = 0;     // limite inferior (o primeiro índice de vetor em C é zero          )
+int PesquisaBinaria(INDEX*vet, int chave, int Tam){
+     int inf = 0;     // limite inferior (o primeiro índice de vetor em C é zero)
      int sup = Tam-1; // limite superior (termina em um número a menos. 0 a 9 são 10 números)
      int meio;
-     
      while (inf <= sup){
           meio = (inf + sup)/2;
-          if (chave == vet[meio]->id)
+          if (chave == vet[meio].id)
                return meio;
-          if (chave < vet[meio]->id)
+          if (chave < vet[meio].id)
                sup = meio-1;
           else
                inf = meio+1;
@@ -79,81 +81,75 @@ int PesquisaBinaria (INDEX**vet, int chave, int Tam){
 }
 
 
-int pesquisaIndex(FILE* df,INDEX**index,ALUNO*reg, int nusp, int tam){
-    
+int pesquisaIndex(FILE* df,INDEX*index,ALUNO reg, int nusp, int tam){
     int op = PesquisaBinaria(index,nusp,tam);
-    
     if( op > -1){
-
         rewind(df);
-        fseek(df, sizeof(ALUNO*)*op, SEEK_SET);
-        fread(&reg, sizeof(ALUNO*), 1, df);
+        int pos = sizeof(ALUNO)*index[op].rrn; // vai ate a posicao
+        fseek(df, pos, SEEK_SET);
+        fread(&reg, sizeof(ALUNO), 1, df);
+        imprimeRegistro(reg);
         return 1;
+    }else{
+        printf("\t\nRegistro nao existe ou foi apagado\n");
     }
-    
     return 0; // caso indice no existir
 }
 
+ALUNO CriarAluno(){ // pega o resgistro do aluno e retona um tipo aluno
+    ALUNO novo;
+    printf("Nome:");
+    scanf(" %[^\n]s",novo.nome);
+    printf("Sobrenome:");
+    scanf(" %[^\n]s",novo.sobrenome);
+    printf("Curso:");
+    scanf(" %[^\n]s",novo.curso);
+    printf("nUSP:");
+    scanf("%d",&novo.numUSP);
+    printf("Nota:");
+    scanf("%f",&novo.nota);
+    return novo;
+}
 
-void insereAluno(FILE *df, ALUNO *novo, int nusp,long endereco){// segue o mesmo esquema do 
-    novo= (ALUNO*)malloc(sizeof(ALUNO));
-    novo->numUSP = nusp;
-    printf("Coloque seu nome:\n");
-    scanf("%s",novo->nome);
-    printf("Sobrenome:\n");
-     scanf("%s",novo->sobrenome);
-    printf("Curso:\n");
-     scanf("%s",novo->curso);
-    printf("Nota:\n");
-     scanf("%f",&novo->nota);
-    // posiciona o ponteiro no ultimo byte e add um novo 5regiostro
+int insereIndex(INDEX* index,int endereco, int nusp, int *tamIndex){ // insere no registro index
+    if(!index) return 0;
+    index = (INDEX*)realloc(index,sizeof(INDEX)*(*tamIndex+1));
+    index[*tamIndex].id = nusp;
+    index[*tamIndex].rrn = endereco-1; // tira um para dar o posicao verdeira
+    return 1;
+}
 
-    rewind(df);
-    fseek(df, 0, SEEK_END); 
-    endereco = ftell(df);
-	fwrite(&novo, sizeof(ALUNO*), 1, df);
-    fseek(df, 0, SEEK_CUR);
-    //tam = ((int)ftell(df))/sizeof(ALUNO); 
-	rewind(df);
 
+int insereReg(FILE *df,INDEX*vet  ,int endereco, int TamIndex){// segue o mesmo esquema do 
+    if(!df)return -1;
+    ALUNO novo = CriarAluno();  // pega registro 
+    if(PesquisaBinaria(vet,novo.numUSP,TamIndex) < 0){
+        fseek(df, 0, SEEK_END); 
+	    fwrite(&novo, sizeof(ALUNO), 1, df); // escreve no arquivo
+        insereIndex(vet,endereco+1,novo.numUSP, &TamIndex); // no index
+        return 1;
+    }else{
+        printf("    Aluno ja tem cadrastro\n");
+    }
+    
+    return 0;
 }
  
-void insereIndex(INDEX** index,long endereco, int nusp, int *tamIndex){ // insere no registro index
-    //  
-    INDEX *novo = (INDEX*)malloc(sizeof(INDEX)); 
-    
-    novo->id = nusp;
-    novo->byte = endereco;
-    index[*tamIndex] = novo;
-    (*tamIndex) = (*tamIndex) +1;
-    index = (INDEX**)realloc(index,sizeof(INDEX*)*((*tamIndex)+1));
-    ordenaIndex(index,*tamIndex);
-    printf("               %d ", *tamIndex);
-   
 
-} // tudo ok
-
-
-
-
-void insereRegistro(FILE* df,INDEX**vet,int nusp, int tamVET,long endereco){
-    ALUNO *novo = NULL;
-   
-    insereAluno(df,novo,nusp,endereco);
-    insereIndex(vet,endereco,nusp ,&tamVET);
-}
-
-
-void GeraIndex(FILE*df,INDEX** vet,int*tam){
+int GeraIndex(FILE*df, INDEX* vet, int tam){
+    // manda a ram para o arquivo
+    if(!df) return -1;
+    if(!vet) return -2;
     int i;
-    rewind(df);
-    fseek(df, 0, SEEK_END); 
-    for(i =0 ;i< *tam;i++){
-	        fwrite(&vet[i], sizeof(INDEX*), 1, df);
-
+    fseek(df, 0, SEEK_SET); 
+    for(i =0;i< tam;i++){
+        if(vet[i].id > -1){ // só vai para o arquivo os numeros que n foram excluidos
+	    fwrite(&vet[i].id, sizeof(int), 1, df);
+        fwrite(&vet[i].rrn, sizeof(int), 1, df);
+        }
     }
     free(vet);
- 
+    return 1;
 }
 
 void imprimeRegistro( ALUNO aluno) {
@@ -161,8 +157,8 @@ void imprimeRegistro( ALUNO aluno) {
 }
 
 
-void removeIndex(INDEX **vet, int pos){
-    vet[pos]->id = (vet[pos]->id)*-1; // negativa o id do elemento
+void removeIndex(INDEX *vet, int pos){
+    vet[pos].id = (vet[pos].id)*-1; // negativa o nusp
 } 
 
 
@@ -170,12 +166,24 @@ void removeRegistro(FILE *df, int pos){ // remoça logica
     rewind(df);
     fseek(df, sizeof(ALUNO)*pos,SEEK_SET);
     char c = '*';
-    fwrite(&c,sizeof(char),1,df);
-    rewind(df);
+    fputc(c, df); // exclusão logica
 }
- void remover(FILE *df,INDEX **vet, int tamVET, int nusp){
-     int op = PesquisaBinaria(vet,nusp,tamVET);
-     removeRegistro(df,op);
-     removeIndex(vet,op);
 
+
+ void remover(FILE *df,INDEX *vet, int tamVET, int nusp){
+     int op = PesquisaBinaria(vet,nusp,tamVET); // 
+     if(op > -1){
+        removeRegistro(df,op);
+        removeIndex(vet,op);
+    }else{
+        printf("Não existe esse ALuno");
+    }
  }
+
+void menu(){
+    printf("\nOperacoes:");
+    printf("\n- Gravar    1");
+    printf("\n- Pesquisar 2");
+    printf("\n- Remover   3");
+    printf("\n- Sair      4\n\n");
+}

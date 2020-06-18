@@ -96,9 +96,15 @@ int main(void) {
 
     
     // carrega arquivos
+<<<<<<< HEAD
     /*descarregarIndexPrim(index_prim,vetPri,tamPri);
     descarregarIndexSec(index_sec,vetSec,tamSec);
     descarregarLista(list,listVet,tamList); */
+=======
+    descarregarIndexPrim(index_prim,vetPri,tamPri);
+    descarregarIndexSec(index_sec,vetSec,tamSec);
+    descarregarLista(list,listVet,tamList); 
+>>>>>>> 7cbf90ce4a08b936b49ab385eaf6bd151599af7e
 
     // fecha arquivos
     fclose(arq);
