@@ -10,9 +10,9 @@
 
 struct aluno{
 	int numUSP;
-	char nome[TAM];
-	char sobrenome[TAM];
-	char curso[TAM];
+	char nome[TAM]; // 16
+	char sobrenome[TAM]; // 16
+	char curso[TAM]; // 16
 	float nota;
 };
 
@@ -21,37 +21,76 @@ struct index_primario{
     int RRN;
 };
 
-struct LIST_INDEX{
-    int RRN;
-    struct LIST_INDEX *prox;
+struct  LIST_INDEX {
+    int prox;
+    int nusp;
 };
-
-typedef struct LIST_INDEX list_index;
 
 struct index_secundario{ // analisa a struct 
-    int quant;
-    char sobrenome[TAM];
-    list_index *pri; // ligação para a primeira lista
-};
+    char sobrenome[TAM]; // 16
+    int pos;
+}; 
 
 typedef struct aluno Aluno;
 typedef struct index_primario INDEX_Primario;
 typedef struct index_secundario INDEX_Secundario;
+typedef struct LIST_INDEX list_index;
+
+//criar arquivos e carregar
+FILE *criarArquivo(char *);
+
+INDEX_Primario *CarregarIndexPri(FILE*,int*);
+
+INDEX_Secundario *CarregarIndexSec(FILE*, int* );
+
+list_index *CarregarLista(FILE*,int*);
+
+Aluno CriarAluno();
+
+Aluno *PesquisaPrim(FILE *,INDEX_Primario *,int ,int );
 
 
-FILE * criarArquivo(char *);
+// seta o tamanho do arquivo 
+int tamArquivo(FILE*);
 
-INDEX_Primario *CarregarIndexPri(FILE*,int);
 
-INDEX_Secundario *CarregarIndexSec(FILE*);
+int addPrim(FILE*,INDEX_Primario *,int, int,int);
 
-int addPrimario(INDEX_Primario *,int,int, int);
+int addSec(INDEX_Secundario *,list_index*,int,int,int,char[]);
 
-Aluno *CriarAluno();
+Aluno* addArquivo(FILE *,INDEX_Primario *,int , int);
 
-int addAlunoArquivo(FILE *, Aluno *, int);
+int addAlunoArquivo(FILE*, Aluno *, int);
 
-int inserirAluno(FILE *, INDEX_Primario*,INDEX_Secundario *, int);
+//int inserirAluno(FILE*, INDEX_Primario**,INDEX_Secundario**, int);
+
+
+// descarregar a memoria ram nos arquivos
+int descarregarIndexPrim(FILE *, INDEX_Primario*, int);
+
+int descarregarIndexSec(FILE *, INDEX_Secundario *, int);
+
+int descarregarLista(FILE *, list_index *, int);
+
+
+// menus
+void menu();
+
+void imprimeAluno(Aluno*);
+
+// buscas
+int BuscaBinaria_Prim(INDEX_Primario *,int,int, int);
+
+int BuscaBinaria_Sec(INDEX_Secundario *, int , int , char[]);
+
+int *buscaList(list_index *,int, int*);
+
+int buscaSobrenome(FILE *,INDEX_Primario*, INDEX_Secundario *,list_index *, int, int ,int , char []);
+
+// remover
+int removerNusp(INDEX_Primario**,list_index**,int, int, int);
+
+int removerSobrenome(FILE *,INDEX_Primario ** ,INDEX_Secundario **,list_index **,int, int ,int,char[]);
 
 
 #endif
