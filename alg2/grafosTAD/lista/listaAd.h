@@ -1,5 +1,5 @@
-#ifndef listaAd.h
-#define listaAd.h
+#ifndef listaAd
+#define listaAd
 
 // defines erros
 #define SUCESS 1
@@ -13,6 +13,7 @@ typedef int tvertice;
 
 struct vertice{
     struct vertice *prox;
+    tvertice distino;
     tpeso Peso;
 
 };
@@ -31,5 +32,5 @@ typedef struct vertice Vertice;
 // criar grafo
 
 Grafo *criarGrafo(int);
-
+int inserirAresta(Grafo *,tvertice,tvertice,tpeso);
 #endif
