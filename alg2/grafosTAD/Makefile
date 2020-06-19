@@ -1,17 +1,18 @@
-all:compile
+#igor guilherme pereira loredo nusp 11275071
+all: compile
 
 compile-lista:
-	@gcc -o lista lista/*.c
+	@gcc -o listaExe lista/*.c -I lista/. -Wall
 
 compile:
-	@gcc -o matriz matriz/*.c
-	@gcc -o lista lista/*.c
+	@gcc -o matrizExe matriz/*.c -I matriz/. -Wall
+	@gcc -o listaExe lista/*.c -I lista/. -Wall
 
 compile-matriz:
-	@gcc -o matriz matriz/*.c
+	@gcc -o matrizExe matriz/*.c -I. -Wall
 
 run-matriz:
-	./matriz.exe
+	@./matrizExe
 
 run-lista:
-	./lista.exe
+	@./listaExe
