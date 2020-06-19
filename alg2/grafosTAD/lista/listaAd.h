@@ -8,8 +8,8 @@
 
 #define MAX 100
 
-typedef int tpeso
-typedef int 
+typedef int tpeso;
+typedef int tvertice;
 
 
 struct vertice{
