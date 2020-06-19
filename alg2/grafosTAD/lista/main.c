@@ -4,8 +4,7 @@
 
 
 int main (){
-
-    printf("este");
+    
     return 0;
 }
 
