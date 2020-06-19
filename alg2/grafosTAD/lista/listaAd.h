@@ -5,6 +5,7 @@
 #define SUCESS 1
 #define ERRO -1
 #define ERROGRAFO -2
+#define ERROVERTICE -3
 
 #define MAX 100
 
@@ -20,7 +21,7 @@ struct vertice{
 
 
 struct grafo{
-    struct vertice *Matriz;    
+    struct vertice *Lista;    
     int numVertice;
 };
 
