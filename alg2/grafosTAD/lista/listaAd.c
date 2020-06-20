@@ -34,8 +34,20 @@ int inserirAresta(Grafo*lista, tvertice a,tvertice b,tpeso peso){
         if (aux->distino == b ) 
             return SUCESS;
     }
-    printf("%d ddddddd",aux->distino);
+    printf("inseir %d\n",aux->distino);
     Vertice *novo = criarVertice(b,peso);
     aux->prox = novo;
     return SUCESS;
+}
+
+int verificarAresta(Grafo *lista,tvertice a ,tvertice b){
+    if(!lista) return ERROGRAFO;
+    if(!a || !b) return ERROVERTICE;
+
+    Vertice *aux = &lista->Lista[a-1] ;
+    for(; aux->prox !=NULL; aux = aux->prox )
+        if (aux->distino == b ) 
+            return aux->Peso;
+
+    return aux->distino == b?  aux->Peso:ERRO;
 }
