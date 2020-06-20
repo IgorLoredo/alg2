@@ -35,7 +35,7 @@ int inserirArestaLista(Grafo*lista, tvertice a,tvertice b,tpeso peso){
             return SUCESS;
     }
     printf("inseir %d\n",aux->distino);
-    Vertice *novo = criarVertice(b,peso);
+    Vertice *novo = criarVerticeLista(b,peso);
     aux->prox = novo;
     return SUCESS;
 }
@@ -55,5 +55,20 @@ int verificarArestaLista(Grafo *lista,tvertice a ,tvertice b){
 }
 
 
-int liberarGrafo
+int liberarGrafoLista(Grafo*lista){
+    if(!lista) return ERROGRAFO;
+    int i;
+    Vertice *aux1 = NULL;
+    Vertice *aux2 = NULL;
+    for(i =0;i < lista->numVertice;i++){
+        aux1 = &lista->Lista[i];
+       for(; aux1->prox !=NULL; aux1 = aux1->prox ){
+            aux2 = aux1->prox; 
+            free(aux1); 
+            aux1 = aux2;
+       }
+    } 
+    free(lista);
+    return SUCESS;
+}
 

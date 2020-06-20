@@ -26,6 +26,6 @@ int inserirArestaMatriz(Grafo*,tvertice ,tvertice,tpeso);
 
 int verificaArestaMatriz(Grafo*,tvertice,tvertice);
 
-int liberarGrafoMAtriz(Grafo*);
+int liberarGrafoMatriz(Grafo*);
 
 #endif
