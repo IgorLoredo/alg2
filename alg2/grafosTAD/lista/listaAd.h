@@ -14,7 +14,7 @@ typedef int tvertice;
 
 struct vertice{
     struct vertice *prox;
-    tvertice distino;
+    tvertice distino;   
     tpeso Peso;
 
 };
@@ -34,4 +34,7 @@ typedef struct vertice Vertice;
 
 Grafo *criarGrafo(int);
 int inserirAresta(Grafo *,tvertice,tvertice,tpeso);
+Vertice *criarVertice(tvertice,tpeso);
+
+
 #endif
