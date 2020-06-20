@@ -6,7 +6,7 @@
 
 
 
-Grafo *iniciarGrafo(int num){
+Grafo *iniciarGrafoMatriz(int num){
     int i,j;
     Grafo *new = (Grafo*)calloc(1,sizeof(Grafo));
     new->numVertices = num;
@@ -23,7 +23,7 @@ Grafo *iniciarGrafo(int num){
     return new;
 }
 
-int inserirAresta(Grafo *new,tvertice a, tvertice b, tpeso peso ){
+int inserirArestaMatriz(Grafo *new,tvertice a, tvertice b, tpeso peso ){
     if(!new) return ERROGRAFO;
     if(a < 0 || b < 0 ) return ERRO;
     new->Matriz[a-1][b-1] = peso;
@@ -31,13 +31,13 @@ int inserirAresta(Grafo *new,tvertice a, tvertice b, tpeso peso ){
 }
 
 
-int verificaAresta(Grafo* matriz,tvertice a,tvertice b){
+int verificaArestaMatriz(Grafo* matriz,tvertice a,tvertice b){
     if(!matriz) return ERROGRAFO;
     return matriz->Matriz[a-1][b-1] != 0 ? matriz->Matriz[a-1][b-1] : ERRO;
 }
 
 
-int liberarGrafo(Grafo* matriz){
+int liberarGrafoMatriz(Grafo* matriz){
     int i;
     for(i =0; i < matriz->numVertices;i++)
         free(matriz->Matriz[i]);

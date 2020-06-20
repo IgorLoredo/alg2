@@ -32,12 +32,14 @@ typedef struct vertice Vertice;
 // liberar 
 // criar grafo
 
-Grafo *criarGrafo(int);
+Grafo *criarGrafoLista(int);
 
-int inserirAresta(Grafo *,tvertice,tvertice,tpeso);
+int inserirArestaLista(Grafo *,tvertice,tvertice,tpeso);
 
-Vertice *criarVertice(tvertice,tpeso);
+Vertice *criarVerticeLista(tvertice,tpeso);
 
-int verificarAresta(Grafo*,tvertice,tvertice);
+int verificarArestaLista(Grafo*,tvertice,tvertice);
+
+int liberarGrafoLista(Grafo*);
 
 #endif

@@ -20,12 +20,12 @@ struct grafo{
 
 typedef struct grafo Grafo;
 
-Grafo *iniciarGrafo(int);
+Grafo *iniciarGrafoMatriz(int);
 
-int inserirAresta(Grafo*,tvertice ,tvertice,tpeso);
+int inserirArestaMatriz(Grafo*,tvertice ,tvertice,tpeso);
 
-int verificaAresta(Grafo*,tvertice,tvertice);
+int verificaArestaMatriz(Grafo*,tvertice,tvertice);
 
-int liberarGrafo(Grafo*);
+int liberarGrafoMAtriz(Grafo*);
 
 #endif

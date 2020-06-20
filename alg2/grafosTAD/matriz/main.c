@@ -4,10 +4,10 @@
 
 
 int main (){
-    Grafo *matriz = iniciarGrafo(5);
-    inserirAresta(matriz,1,2,2100);
-    printf("%d\n",verificaAresta(matriz,1,1));
-    liberarGrafo(matriz);
+    Grafo *matriz = iniciarGrafoMatriz(5);
+    inserirArestaMatriz(matriz,1,2,2100);
+    printf("%d\n",verificaArestaMatriz(matriz,1,1));
+    liberarGrafoMAtriz(matriz);
     return 0;
 }
 

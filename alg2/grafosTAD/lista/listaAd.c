@@ -4,7 +4,7 @@
 
 
 
-Grafo *criarGrafo(int num){
+Grafo *criarGrafoLista(int num){
     int i;
     Grafo *new = (Grafo*)calloc(1,sizeof(Grafo));
     new->numVertice = num;
@@ -17,14 +17,14 @@ Grafo *criarGrafo(int num){
     return new;
 }
 
-Vertice *criarVertice(tvertice vert,tpeso peso){
+Vertice *criarVerticeLista(tvertice vert,tpeso peso){
      Vertice *novo = (Vertice*)calloc(1,sizeof(Vertice));
      novo->Peso=peso;
      novo->distino = vert;
     return novo;
  }
 
-int inserirAresta(Grafo*lista, tvertice a,tvertice b,tpeso peso){
+int inserirArestaLista(Grafo*lista, tvertice a,tvertice b,tpeso peso){
     if(!lista) return ERROGRAFO;
     if(!a || !b) return ERROVERTICE;
 
@@ -40,14 +40,20 @@ int inserirAresta(Grafo*lista, tvertice a,tvertice b,tpeso peso){
     return SUCESS;
 }
 
-int verificarAresta(Grafo *lista,tvertice a ,tvertice b){
+int verificarArestaLista(Grafo *lista,tvertice a ,tvertice b){
     if(!lista) return ERROGRAFO;
     if(!a || !b) return ERROVERTICE;
 
     Vertice *aux = &lista->Lista[a-1] ;
-    for(; aux->prox !=NULL; aux = aux->prox )
+    for(; aux->prox !=NULL; aux = aux->prox ){
+        // caso encontre dentro da lista
         if (aux->distino == b ) 
             return aux->Peso;
-
+    }
+    // caso encontre no final da lista
     return aux->distino == b?  aux->Peso:ERRO;
 }
+
+
+int liberarGrafo
+
