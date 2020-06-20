@@ -1,3 +1,5 @@
+//igor guilherme pereira loredo nusp 11275071
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "matrizAd.h"

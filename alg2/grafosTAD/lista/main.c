@@ -1,3 +1,6 @@
+//igor guilherme pereira loredo nusp 11275071
+
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <listaAd.h>
