@@ -15,15 +15,18 @@
 #define PRETO 2
 
 int DFSIterativa(Grafo *);
-int DFSRec(Grafo*);
 
-tvertice proxAj(Grafo *, tvertice );
+tvertice proxAj(Grafo *, tvertice ,tvertice);
 
-int recuperaADJ(Grafo *, tvertice , tvertice *, tpeso *);
+int recuperaADJ(Grafo *, tvertice ,tvertice, tvertice *, tpeso *);
 
 tvertice primeiroAdj(Grafo *, tvertice );
 
 int visitaDFS_REC(Grafo *,int[], tvertice );
 
+
+int buscaBFS(Grafo*);
+
+int visitaBFS(Grafo *, int [], tvertice );
 
 #endif

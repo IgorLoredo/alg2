@@ -5,10 +5,12 @@
 
 #include "matrizAd.h"
 
-#define MAXFILA 300
+#define MAXFILA 1000
 
 struct fila{
-    int comeco,fim;
+    int cont;
+    int comeco;
+    int fim;
     int elementos[MAXFILA];
 };
 
@@ -24,5 +26,6 @@ tvertice pegaTop(Fila*);
 
 void esvaziar(Fila*);
 
+int Vazia(Fila *);
 
 #endif
