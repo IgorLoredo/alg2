@@ -83,10 +83,23 @@ int recuperaADJ(Grafo *grafo, tvertice atual, tvertice *prox, tpeso *peso){
 
 
 
-void BFS(Grafo *grafo, tvertice verticebusca){
+void buscaBFS(Grafo *grafo, tvertice verticebusca){
     tvertice v;
     int cor[MAX];
     for(v = 0; grafo->numVertices;v++){
         cor[v] = BRANCO;
     }
+
+     for(v = 0; grafo->numVertices;v++){
+         if(cor[v] == BRANCO){
+
+         }
+     }
+}
+
+
+int visitaBFS(Grafo *grafo, int cor[], tvertice atual){
+
+
+    return SUCESS;
 }
