@@ -6,7 +6,7 @@
 
 
 int main(){
-    Grafo *matriz = iniciarGrafoMatriz(8);
+    Grafo *matriz = iniciarGrafoMatriz(7);
     inserirArestaMatriz(matriz,1,2,10);
     inserirArestaMatriz(matriz,1,7,10);
 
