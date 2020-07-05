@@ -11,7 +11,6 @@ int main(){
     Grafo *matriz = iniciarGrafoMatriz(6);
     inserirArestaMatriz(matriz,1,2,10);
     inserirArestaMatriz(matriz,1,6,10);
-
     inserirArestaMatriz(matriz,2,3,10);
     inserirArestaMatriz(matriz,2,4,10);
     inserirArestaMatriz(matriz,5,5,10);
