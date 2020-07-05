@@ -14,8 +14,9 @@
 #define CINZA 1
 #define PRETO 2
 
-tvertice DFSIterativa(Grafo *, tvertice,tpeso );
-
+int DFSIterativa(Grafo *);
+ 
+tpeso visita();
 
 
 #endif
