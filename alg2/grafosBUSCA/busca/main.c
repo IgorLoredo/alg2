@@ -14,17 +14,11 @@ int main(){
 
     inserirArestaMatriz(matriz,2,3,10);
     inserirArestaMatriz(matriz,2,4,10);
-   inserirArestaMatriz(matriz,5,5,10);
+    inserirArestaMatriz(matriz,5,5,10);
     inserirArestaMatriz(matriz,4,5,10);
     
-    // DFSRec(matriz);
-     buscaBFS(matriz);
-
-    //  for(int i =0; i< matriz->numVertices;i++){
-    //     for(int j = 0; j < matriz->numVertices;j++){
-    //         printf("%d ",matriz->Matriz[i][j]);
-    //     }
-    //     printf("\n");
-    //  }
+    DFSRec(matriz);
+    buscaBFS(matriz);
+    
     return 0;
 }
