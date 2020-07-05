@@ -7,9 +7,16 @@ compile-lista:
 compile:
 	@gcc -o matrizExe matriz/*.c -I matriz/. -Wall
 	@gcc -o listaExe lista/*.c -I lista/. -Wall
+	@gcc -o buscaExe busca/*.c -I. -Wall
 
 compile-matriz:
 	@gcc -o matrizExe matriz/*.c -I. -Wall
+
+compile-busca:
+	@gcc -o buscaExe busca/*.c -I. -Wall
+
+run-busca:
+	@./buscaExe
 
 run-matriz:
 	@./matrizExe

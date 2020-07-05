@@ -19,30 +19,35 @@ int DFSRec(Grafo *new){
     for(i = 0; i < new->numVertices; i++)
         matriz[i]= BRANCO;
 
-    
-    for(i = 0; i < new->numVertices;i++){
-        if(matriz[i] == BRANCO) {
-            int pos = visitaDFS_REC(new,matriz,i);
-            printf("%d \n",pos);
-        }
-    }
+    visitaDFS_REC(new,matriz,1);
+    // for(i = 0; i < new->numVertices;i++){
+    //     if(matriz[i] == BRANCO) {
+    //         int pos = visitaDFS_REC(new,matriz,i);
+    //         printf("%d \n",pos);
+    //     }
+    // }
     return SUCESS;
 }
 
 int visitaDFS_REC(Grafo *grafo,int matriz[], tvertice node){
     tpeso i = 0;
-    int flag =1;
     matriz[node] = CINZA;
+    //printf("node %d cinza\n",node);
+
     tvertice atual = primeiroAdj(grafo,node);
-    tvertice prox;
+    tvertice prox = 0;
     tpeso peso;
     while(atual != -1){
         recuperaADJ(grafo,atual,&prox,&peso);
+        printf("node %d saindo\n",atual);
+
         if(matriz[prox] == BRANCO){
+            printf("prox %d preto\n",prox);
             visitaDFS_REC(grafo,matriz,prox);
         }            
         atual = proxAj(grafo,atual);
     }
+    
     matriz[node] = PRETO;
     return SUCESS;
 }
@@ -54,7 +59,6 @@ tvertice primeiroAdj(Grafo *grafo, tvertice node){
             return i;
         }
     }
-
     return ERROVERTICE;
 }
 
