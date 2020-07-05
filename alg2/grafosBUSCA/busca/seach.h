@@ -17,5 +17,13 @@
 int DFSIterativa(Grafo *);
 int DFSRec(Grafo*);
 
+tvertice proxAj(Grafo *, tvertice );
+
+int recuperaADJ(Grafo *, tvertice , tvertice *, tpeso *);
+
+tvertice primeiroAdj(Grafo *, tvertice );
+
+int visitaDFS_REC(Grafo *,int[], tvertice );
+
 
 #endif
