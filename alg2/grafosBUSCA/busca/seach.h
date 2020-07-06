@@ -8,7 +8,7 @@
 #define ERROGRAFO -2
 #define ERROVERTICE -3
 
-
+   
 
 #define BRANCO 0
 #define CINZA 1
