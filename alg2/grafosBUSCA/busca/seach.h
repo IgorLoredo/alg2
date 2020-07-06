@@ -15,8 +15,7 @@
 #define PRETO 2
 
 int DFSIterativa(Grafo *);
- 
-tpeso visita();
+int DFSRec(Grafo*);
 
 
 #endif

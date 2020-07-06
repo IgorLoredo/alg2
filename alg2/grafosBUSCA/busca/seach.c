@@ -28,17 +28,39 @@ int DFSIterativa(Grafo *new){
     return SUCESS;
 }
 
-tpeso visitaDFS(Grafo *grafo,int matriz[], tvertice node){
-    tpeso soma =0;
+tpeso visitaDFS_REC(Grafo *grafo,int matriz[], tvertice node){
     tpeso i = 0;
     int flag =1;
-    while(flag){
-        if(i != grafo->numVertices){
-            soma += verificaArestaMatriz(grafo,node -1,i);
-            i +=1;
-        }else{
-            flag =0;
+    matriz[node] = CINZA;
+    tvertice atual = primeiroAdj(grafo,node);
+
+    while(atual != -1){
+        
+
+    }
+    matriz[node] = PRETO;
+    return SUCESS;
+}
+
+tvertice primeiroAdj(Grafo *grafo, tvertice node){
+    int i;
+    for(i =0; i<grafo->numVertices;i++){
+        if(verificaArestaMatriz(grafo,node,i) > -1){
+            return i;
         }
     }
-    return soma;
+
+    return ERROVERTICE;
+}
+
+tvertice proxAj(Grafo *grafo, tvertice node){
+    int i;
+    for(i =node; i<grafo->numVertices;i++){
+        if(  verificaArestaMatriz(grafo,node ,i) > -1){
+            return i;
+        }
+    }
+
+    return ERROVERTICE;
+
 }
